@@ -1,76 +1,9 @@
-import random
-
-suits = ('Hearts', 'Diamonds', 'Spades', 'Clubs')
-ranks = ('Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Jack', 'Queen', 'King', 'Ace')
-values = {'Two':2, 'Three':3, 'Four':4, 'Five':5, 'Six':6, 'Seven':7, 'Eight':8, 'Nine':9, 'Ten':10, 'Jack':10,
-         'Queen':10, 'King':10, 'Ace':11}
+from hand import Hand
+from deck import Deck
+from card import Card
+from chips import Chips
 
 playing = True
-
-class Card:
-
-	def __init__(self, suit, rank):
-		#This may just require getting the next card from the Deck class which is shuffled on initialisation
-		self.suit = suit
-		self.rank = rank
-
-	def __str__(self):
-		return "This card is the {} of {}".format(self.rank, self.suit)
-
-class Deck:
-
-	def __init__(self):
-		#shuffle deck of cards on initialisation
-		self.deck = []
-		for suit in suits:
-			for rank in ranks:
-				card = Card(suit, rank)
-				self.deck.append(card)
-
-
-	def __str__(self):
-		deck_comp = ''
-		for card in self.deck:
-			deck_comp = "\n"+card.__str__()
-		return deck_comp
-
-	def shuffle(self):
-		random.shuffle(self.deck)
-
-	def deal(self):
-		return self.deck.pop()
-
-class Hand:
-
-	def __init__(self):
-		self.cards = []
-		self.value = 0
-		self.aces = 0
-
-	def __str__(self):
-		pass
-
-	def add_card(self, card):
-		self.cards.append(card)
-		self.value += values[card.rank]
-		if card.rank == 'Ace':
-			self.aces += 1
-
-	def adjust_for_ace(self):
-		while self.value > 21 and self.aces > 0:
-			self.value -= 10
-			self.aces -= 1
-
-class Chips:
-	def __init__(self, total=100):
-		self.total = total
-		self.bet = 0
-
-	def win_bet(self):
-		self.total += self.bet
-	def lose_bet(self):
-		self.total -= self.bet
-
 
 def take_bet(chips):
 	while True:
@@ -199,16 +132,12 @@ while True:
     
     # Inform Player of their chips total 
     print("\nPlayer's winnings stand at",player_chips.total)
-    if(player_chips.total > 1):
-	    # Ask to play again
-	    new_game = input("Would you like to play another hand? Enter 'y' or 'n' ")
-	    
-	    if new_game[0].lower()=='y':
-	        playing=True
-	        continue
-	    else:
-	        print("Thanks for playing!")
-	        break
-	else:
-		print("You've run out of chips! Thanks for playing")
-	        break
+    # Ask to play again
+    new_game = input("Would you like to play another hand? Enter 'y' or 'n' ")
+    
+    if new_game[0].lower()=='y':
+        playing=True
+        continue
+    else:
+        print("Thanks for playing!")
+        break
